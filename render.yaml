@@ -4,7 +4,7 @@ services:
     name: ticket-management-api
     runtime: node
     rootDir: backend
-    buildCommand: npm install && npm run build
+    buildCommand: npm ci
     startCommand: npm start
     envVars:
       - key: NODE_ENV
@@ -14,17 +14,16 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: MONGODB_URI
-        sync: false # This will need to be set manually in the Render dashboard
+        value: mongodb+srv://shared-cluster:shared-cluster-23513@shared-cluster.wtzmfhn.mongodb.net/chemreq
 
   # Frontend static site
-  - type: web
+  - type: static
     name: ticket-management-frontend
-    runtime: static
-    buildCommand: npm install && npm run build
+    buildCommand: npm ci && npm run build
     staticPublishPath: ./build
     envVars:
       - key: REACT_APP_API_URL
         fromService:
           name: ticket-management-api
           type: web
-          property: url 
+          property: url

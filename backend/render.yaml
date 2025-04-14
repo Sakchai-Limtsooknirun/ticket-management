@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: ticket-management-api
+    runtime: node
+    buildCommand: npm install --no-audit --prefer-offline && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        value: mongodb+srv://shared-cluster:shared-cluster-23513@shared-cluster.wtzmfhn.mongodb.net/chemreq 

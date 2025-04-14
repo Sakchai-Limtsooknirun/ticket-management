@@ -4,7 +4,7 @@ services:
     name: ticket-management-api
     runtime: node
     rootDir: backend
-    buildCommand: npm ci
+    buildCommand: npm install --no-audit --prefer-offline && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
@@ -19,7 +19,7 @@ services:
   # Frontend static site
   - type: static
     name: ticket-management-frontend
-    buildCommand: npm ci && npm run build
+    buildCommand: npm install --no-audit --prefer-offline && npm run build
     staticPublishPath: ./build
     envVars:
       - key: REACT_APP_API_URL

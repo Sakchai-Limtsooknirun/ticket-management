@@ -2,42 +2,15 @@
 
 A full-stack ticket management application built with React, TypeScript, and Node.js.
 
-## Project Structure
+## Local Development
 
-```
-├── src/                      # Frontend source code
-│   ├── assets/              # Static assets (images, fonts, etc.)
-│   ├── components/          # Reusable React components
-│   ├── constants/           # Application constants
-│   ├── context/             # React context providers
-│   ├── hooks/               # Custom React hooks
-│   ├── layouts/             # Page layout components
-│   ├── pages/               # Page components
-│   ├── services/            # API services
-│   ├── styles/              # Global styles and theme
-│   ├── types/              # TypeScript type definitions
-│   └── utils/              # Utility functions
-│
-├── backend/                 # Backend source code
-│   ├── src/
-│   │   ├── controllers/    # Route controllers
-│   │   ├── models/         # Database models
-│   │   ├── routes/         # API routes
-│   │   ├── services/       # Business logic
-│   │   ├── middleware/     # Custom middleware
-│   │   ├── utils/          # Utility functions
-│   │   ├── config/        # Configuration files
-│   │   └── types/         # TypeScript type definitions
-│   └── uploads/            # File uploads directory
-│
-├── public/                 # Static public assets
-└── node_modules/          # Dependencies
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/ticket-management.git
+   cd ticket-management
+   ```
 
-## Setup Instructions
-
-1. Clone the repository
-2. Copy .env.example to .env and update the variables
-3. Install dependencies:
+2. **Install dependencies**
    ```bash
    # Install frontend dependencies
    npm install
@@ -45,16 +18,68 @@ A full-stack ticket management application built with React, TypeScript, and Nod
    # Install backend dependencies
    cd backend
    npm install
+   cd ..
    ```
 
-4. Start the development servers:
+3. **Set up environment variables**
+   - Copy `.env.example` to `.env` in the root directory
+   - Copy `backend/.env.example` to `backend/.env`
+
+4. **Run the development servers**
    ```bash
-   # Start frontend (from root directory)
-   npm start
-
-   # Start backend (from backend directory)
+   # Run backend server
+   cd backend
    npm run dev
+
+   # In a new terminal, run frontend server
+   cd ..
+   npm start
    ```
+
+5. **Access the application**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:5001
+
+## Deployment
+
+This application can be deployed using various platforms. We recommend using Render for the backend and Netlify/Vercel for the frontend.
+
+### Automated Deployment
+
+1. **Push your code to GitHub**
+
+2. **Run the deployment script**
+   ```bash
+   ./deploy.sh
+   ```
+
+3. **Follow the prompts to complete deployment**
+
+### Manual Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions on manually deploying to:
+- Render
+- Netlify
+- Vercel
+- Railway
+
+## Project Structure
+
+```
+├── src/                   # Frontend source code
+├── backend/               # Backend source code
+├── public/                # Static public assets
+├── render.yaml            # Render deployment configuration
+├── netlify.toml           # Netlify deployment configuration
+├── vercel.json            # Vercel deployment configuration
+├── DEPLOYMENT.md          # Detailed deployment guide
+├── LARGE_FILES.md         # Guide for handling large files
+└── deploy.sh              # Deployment script
+```
+
+## Environment Variables
+
+See `.env.example` and `backend/.env.example` for required environment variables.
 
 ## Available Scripts
 

@@ -10,11 +10,17 @@ const database_1 = require("./config/database");
 const tickets_1 = __importDefault(require("./routes/tickets"));
 const auth_1 = __importDefault(require("./routes/auth"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
+const mongooseDebug_1 = require("./middleware/mongooseDebug");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
+// Enable Mongoose query debugging
+(0, mongooseDebug_1.setupMongooseDebug)();
 // Middleware
 app.use((0, cors_1.default)({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    // Allow all origins in production or specific ones in development
+    origin: process.env.NODE_ENV === 'production'
+        ? true
+        : ['http://localhost:3000', 'http://localhost:3001'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -38,17 +44,24 @@ app.use('/api/auth', auth_1.default);
 app.use('/api/users', userRoutes_1.default);
 // Basic route for testing
 app.get('/', (req, res) => {
-    res.json({ message: 'Chemical Request System API' });
+    res.json({
+        message: 'Ticket Management System API',
+        environment: process.env.NODE_ENV,
+        timestamp: new Date().toISOString()
+    });
 });
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ message: 'Something went wrong!' });
+    res.status(500).json({
+        message: 'Something went wrong!',
+        error: process.env.NODE_ENV === 'production' ? {} : err.message
+    });
 });
 const PORT = process.env.PORT || 5001;
 // Make sure no other process is using the port
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
 }).on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
         console.error(`Port ${PORT} is already in use. Please use a different port or kill the process using this port.`);

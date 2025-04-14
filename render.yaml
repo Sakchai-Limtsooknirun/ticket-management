@@ -1,0 +1,30 @@
+services:
+  # Backend API service
+  - type: web
+    name: ticket-management-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false # This will need to be set manually in the Render dashboard
+
+  # Frontend static site
+  - type: web
+    name: ticket-management-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          name: ticket-management-api
+          type: web
+          property: url 

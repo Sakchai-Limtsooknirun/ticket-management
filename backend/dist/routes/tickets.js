@@ -103,9 +103,23 @@ router.get('/', auth_1.auth, async (req, res) => {
         if (!req.query.startDate) {
             startDate.setDate(startDate.getDate() - 30); // Default 30 days back
         }
+        // Log the request details
+        console.log('\n📝 GET /tickets Request:');
+        console.log(JSON.stringify({
+            user: {
+                id: user.id,
+                role: user.role
+            },
+            query: req.query,
+            pagination: { page, limit, skip },
+            dateRange: {
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString()
+            }
+        }, null, 2));
         // Build the query
         let query = {
-            requestDate: { $gte: startDate, $lte: endDate }
+            requestDate: { $gte: startDate.toISOString(), $lte: endDate.toISOString() }
         };
         // Apply role-based filtering:
         // - ADMIN can see all tickets
@@ -128,14 +142,19 @@ router.get('/', auth_1.auth, async (req, res) => {
             };
         }
         // Admins can see all tickets (just date filter applied)
+        // Log the final MongoDB query
+        console.log('\n🔎 MongoDB Query:');
+        console.log(JSON.stringify(query, null, 2));
         // Get total count for pagination info
         const total = await Ticket_1.Ticket.countDocuments(query);
+        console.log(`\n📊 Total matching tickets: ${total}`);
         // Execute query with pagination
         const tickets = await Ticket_1.Ticket.find(query)
             .populate('requester')
             .sort({ requestDate: -1 })
             .skip(skip)
             .limit(limit);
+        console.log(`\n✅ Retrieved ${tickets.length} tickets`);
         // Send response with pagination metadata
         res.json({
             tickets,

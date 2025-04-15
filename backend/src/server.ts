@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 import { connectDB } from './config/database';
 import ticketRoutes from './routes/tickets';
 import authRoutes from './routes/auth';
@@ -33,8 +35,6 @@ app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 // Create uploads directory if it doesn't exist
-import fs from 'fs';
-import path from 'path';
 const uploadDir = 'uploads';
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { login, LoginResponse } from '../services/api';
+import { login } from '../services/api';
 import { User, UserRole, Department } from '../types/system';
 import '../styles/Login.css';
 

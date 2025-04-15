@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Navigate } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { Ticket, User, ChemicalConfig } from '../../types/system';
 import '../../styles/tickets/TicketDetail.css';
 
@@ -26,7 +26,6 @@ interface StatusChange {
 
 const TicketDetail: React.FC<TicketDetailProps> = ({ currentUser, tickets, onUpdate }) => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState<Partial<Ticket>>({});
@@ -58,7 +57,7 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ currentUser, tickets, onUpd
     // If all checks pass, set the ticket
     setTicket(foundTicket);
     setChemicalConfig(foundTicket.chemicalConfig || chemicalConfig);
-  }, [id, tickets, currentUser]);
+  }, [id, tickets, currentUser, chemicalConfig]);
 
   const canEdit = currentUser.role === 'ADMIN' || 
     (ticket?.status === 'DRAFT' && ticket.requesterId === currentUser._id);

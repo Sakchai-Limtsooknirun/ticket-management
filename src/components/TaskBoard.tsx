@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, ReactElement, useCallback } from 'react';
+import { FC, useState, useEffect, ReactElement } from 'react';
 import '../styles/TaskBoard.css';
 import { Ticket, TicketStatus, User } from '../types/system';
 import { DragDropContext, Droppable, Draggable, DropResult, DroppableProps, DroppableProvided, DroppableStateSnapshot } from 'react-beautiful-dnd';

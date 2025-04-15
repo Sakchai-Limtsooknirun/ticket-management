@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Layout from './components/Layout';
 import RouteWrapper from './components/RouteWrapper';
@@ -28,6 +28,27 @@ const App: FC = () => {
   });
   const [serverStatus, setServerStatus] = useState<'unknown' | 'online' | 'offline' | 'auth_issue'>('unknown');
   const [showStartServerInstructions, setShowStartServerInstructions] = useState(false);
+
+  // Define checkServerStatusQuietly function before using it
+  const checkServerStatusQuietly = async () => {
+    try {
+      console.log('Checking server status quietly...');
+      const connectionInfo = await checkApiConnection();
+      
+      if (connectionInfo.overallStatus === 'server_unreachable') {
+        setServerStatus('offline');
+      } else if (connectionInfo.overallStatus === 'auth_issue') {
+        setServerStatus('auth_issue');
+      } else {
+        setServerStatus('online');
+      }
+      
+      console.log('Server status:', serverStatus);
+    } catch (error) {
+      console.error('Error checking server status:', error);
+      setServerStatus('offline');
+    }
+  };
 
   useEffect(() => {
     // Check for existing auth token and user data
@@ -310,27 +331,6 @@ const App: FC = () => {
     setDebugInfo({ ...debugInfo, visible: false });
   };
 
-  // Add a quiet server status check function (no UI feedback)
-  const checkServerStatusQuietly = async () => {
-    try {
-      console.log('Checking server status quietly...');
-      const connectionInfo = await checkApiConnection();
-      
-      if (connectionInfo.overallStatus === 'server_unreachable') {
-        setServerStatus('offline');
-      } else if (connectionInfo.overallStatus === 'auth_issue') {
-        setServerStatus('auth_issue');
-      } else {
-        setServerStatus('online');
-      }
-      
-      console.log('Server status:', serverStatus);
-    } catch (error) {
-      console.error('Error checking server status:', error);
-      setServerStatus('offline');
-    }
-  };
-
   // Update the server connection check to also update status
   const checkServerConnection = async () => {
     try {
@@ -556,7 +556,7 @@ const App: FC = () => {
               }}>
                 npm run dev
                 <br />
-                <span style={{ color: '#999' }}>// or: npm start</span>
+                <span style={{ color: '#999' }}>{/* or: npm start */}</span>
               </div>
             </div>
             

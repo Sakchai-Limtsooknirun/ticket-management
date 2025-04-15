@@ -1,8 +1,8 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import { Ticket, TicketStatus } from '../types/system';
 
-// Update API base URL - the backend routes are already using this pattern
-const API_BASE_URL = 'http://localhost:5001';
+// Use environment variable for API base URL
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
 // Add a simple ping function to check API connectivity
 export const checkApiConnection = async (): Promise<any> => {

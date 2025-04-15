@@ -49,7 +49,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
 // Basic route for testing
-app.get('/', (req, res) => {
+app.get('/', (req: express.Request, res: express.Response) => {
   res.json({ 
     message: 'Ticket Management System API',
     environment: process.env.NODE_ENV,

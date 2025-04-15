@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const fs_1 = __importDefault(require("fs"));
 const database_1 = require("./config/database");
 const tickets_1 = __importDefault(require("./routes/tickets"));
 const auth_1 = __importDefault(require("./routes/auth"));
@@ -31,7 +32,6 @@ app.use(express_1.default.urlencoded({ extended: true }));
 // Connect to MongoDB
 (0, database_1.connectDB)();
 // Create uploads directory if it doesn't exist
-const fs_1 = __importDefault(require("fs"));
 const uploadDir = 'uploads';
 if (!fs_1.default.existsSync(uploadDir)) {
     fs_1.default.mkdirSync(uploadDir);

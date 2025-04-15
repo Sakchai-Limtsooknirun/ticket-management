@@ -8,6 +8,19 @@ import User from '../models/User';
 import { auditService } from '../services/auditService';
 import { getRequestIP, getUserAgent, isForwardMovement, sanitizeObject } from '../utils';
 
+// Define multer File type explicitly
+type MulterFile = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  destination: string;
+  filename: string;
+  path: string;
+  buffer?: Buffer;
+};
+
 const router = express.Router();
 
 // Ensure uploads directory exists
@@ -46,7 +59,7 @@ router.post('/', authenticateToken, upload.array('files'), async (req: Request, 
     }
 
     const { title, description, chemicalConfig } = req.body;
-    const files = req.files as Express.Multer.File[];
+    const files = req.files as MulterFile[];
     
     // Get the requester's full information
     const requester = await User.findById(user.id);
@@ -224,7 +237,7 @@ router.put('/:id', authenticateToken, upload.array('files'), async (req: Request
     }
 
     const { title, description, chemicalConfig, status } = req.body;
-    const files = req.files as Express.Multer.File[];
+    const files = req.files as MulterFile[];
     
     const ticket = await Ticket.findById(req.params.id);
     if (!ticket) {
@@ -368,7 +381,7 @@ router.put('/:id', authenticateToken, upload.array('files'), async (req: Request
 // Delete a ticket
 router.delete('/:id', authenticateToken, async (req: Request, res: Response) => {
   try {
-    const user = req.user;
+    const user = (req as AuthenticatedRequest).user;
     
     // Check if user exists (though authenticateToken middleware should ensure this)
     if (!user) {
